@@ -5,7 +5,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavType
@@ -15,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.dbmciquiz.view.screen.ResultScreen
 import com.example.dbmciquiz.view.screen.quiz.QuizQuestionScreen
+import com.example.dbmciquiz.view.theme.QuizBackground
 
 /**
  * Root of the quiz experience: Quiz ⇄ Result navigation on the app background.
@@ -32,7 +32,7 @@ fun QuizApp() {
     NavHost(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(QuizBackground)
             .safeDrawingPadding(),
         navController = navController,
         startDestination = Screen.QUIZ.route,

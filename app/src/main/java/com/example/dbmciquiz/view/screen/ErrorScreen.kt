@@ -12,10 +12,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import com.example.dbmciquiz.view.theme.QuizOnSurfaceMuted
+import com.example.dbmciquiz.view.theme.Spacing
 
 /** Full-screen error state shown when the quiz fails to load, with a Retry action. */
 @Composable
@@ -23,7 +22,7 @@ fun ErrorScreen(message: String?, onRetry: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(32.dp),
+            .padding(Spacing.xLarge),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -31,20 +30,19 @@ fun ErrorScreen(message: String?, onRetry: () -> Unit) {
             text = "⚠️",
             style = MaterialTheme.typography.displaySmall
         )
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(Spacing.medium))
         Text(
             text = "Couldn't load the quiz",
             style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center
         )
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(Spacing.small))
         Text(
             text = message ?: "Please check your connection and try again.",
             color = QuizOnSurfaceMuted,
             textAlign = TextAlign.Center
         )
-        Spacer(Modifier.height(24.dp))
+        Spacer(Modifier.height(Spacing.large))
         Button(onClick = onRetry) { Text("Retry") }
     }
 }

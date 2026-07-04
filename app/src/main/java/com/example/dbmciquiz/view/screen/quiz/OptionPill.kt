@@ -20,6 +20,7 @@ import com.example.dbmciquiz.view.theme.QuizCorrect
 import com.example.dbmciquiz.view.theme.QuizOnSurface
 import com.example.dbmciquiz.view.theme.QuizSurface
 import com.example.dbmciquiz.view.theme.QuizWrong
+import com.example.dbmciquiz.view.theme.Spacing
 
 /** Visual state of an answer option once (or before) the question is answered. */
 enum class OptionState { DEFAULT, CORRECT, WRONG }
@@ -45,7 +46,7 @@ fun OptionPill(
             .clip(CircleShape)
             .background(background)
             .clickable(enabled = enabled, onClick = onClick)
-            .padding(horizontal = 20.dp, vertical = 14.dp),
+            .padding(horizontal = Spacing.medium, vertical = 14.dp),
         contentAlignment = Alignment.Center
     ) {
         Text(

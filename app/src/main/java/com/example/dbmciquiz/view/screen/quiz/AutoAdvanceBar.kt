@@ -23,9 +23,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.dbmciquiz.view.theme.QuizAccent
 import com.example.dbmciquiz.view.theme.QuizOnSurface
 import com.example.dbmciquiz.view.theme.QuizSurfaceHigh
 import com.example.dbmciquiz.view.theme.QuizTrack
+import com.example.dbmciquiz.view.theme.Spacing
 
 /**
  * Bottom bar shown after answering: a sliding progress bar counts down [durationMs] before
@@ -45,8 +47,8 @@ fun AutoAdvanceBar(durationMs: Long, onCancel: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .background(QuizSurfaceHigh, RoundedCornerShape(20.dp))
-            .padding(horizontal = 16.dp, vertical = 14.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+            .padding(horizontal = Spacing.medium, vertical = 14.dp),
+        verticalArrangement = Arrangement.spacedBy(Spacing.small)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -62,18 +64,18 @@ fun AutoAdvanceBar(durationMs: Long, onCancel: () -> Unit) {
             // Plain clickable text (not a TextButton, whose min-height would unbalance the padding).
             Text(
                 text = "Cancel",
-                color = MaterialTheme.colorScheme.primary,
+                color = QuizAccent,
                 fontWeight = FontWeight.Medium,
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier
                     .clip(RoundedCornerShape(8.dp))
                     .clickable(onClick = onCancel)
-                    .padding(horizontal = 8.dp)
+                    .padding(horizontal = Spacing.small)
             )
         }
         LinearProgressIndicator(
             progress = { progress.value },
-            color = MaterialTheme.colorScheme.primary,
+            color = QuizAccent,
             trackColor = QuizTrack,
             modifier = Modifier
                 .fillMaxWidth()

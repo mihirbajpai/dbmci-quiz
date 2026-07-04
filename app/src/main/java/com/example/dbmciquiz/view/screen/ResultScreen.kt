@@ -25,13 +25,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.dbmciquiz.view.component.enterFrom
 import com.example.dbmciquiz.view.theme.QuizOnSurface
 import com.example.dbmciquiz.view.theme.QuizOnSurfaceMuted
 import com.example.dbmciquiz.view.theme.QuizSurface
+import com.example.dbmciquiz.view.theme.Spacing
 
 /** Delay between consecutive stat cards sliding in. */
 private const val STAT_STAGGER_MS = 90
@@ -50,13 +50,12 @@ fun ResultScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(24.dp),
+            .padding(Spacing.large),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
             text = "Quiz Results",
             style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
             color = QuizOnSurface,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth()
@@ -71,21 +70,20 @@ fun ResultScreen(
             Text(
                 text = "Congratulations!",
                 style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold,
                 color = QuizOnSurface,
                 textAlign = TextAlign.Center
             )
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(Spacing.small))
             Text(
                 text = "You've completed the quiz. Here's your performance summary:",
                 color = QuizOnSurfaceMuted,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.padding(horizontal = 16.dp)
+                modifier = Modifier.padding(horizontal = Spacing.medium)
             )
-            Spacer(Modifier.height(32.dp))
+            Spacer(Modifier.height(Spacing.xLarge))
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+                horizontalArrangement = Arrangement.spacedBy(Spacing.medium)
             ) {
                 StatCard(
                     modifier = Modifier
@@ -104,7 +102,7 @@ fun ResultScreen(
                 )
             }
 
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(Spacing.medium))
 
             StatCard(
                 modifier = Modifier
@@ -114,7 +112,7 @@ fun ResultScreen(
                 value = skipped
             )
 
-            Spacer(Modifier.height(32.dp))
+            Spacer(Modifier.height(Spacing.xLarge))
 
             Button(
                 onClick = onRestart,
@@ -127,8 +125,7 @@ fun ResultScreen(
             ) {
                 Text(
                     text = "Restart Quiz",
-                    fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.padding(vertical = 4.dp)
+                    modifier = Modifier.padding(vertical = Spacing.xSmall)
                 )
             }
         }
@@ -136,7 +133,12 @@ fun ResultScreen(
 }
 
 @Composable
-private fun StatCard(modifier: Modifier, title: String, value: Int, suffix: String = "") {
+private fun StatCard(
+    modifier: Modifier = Modifier,
+    title: String,
+    value: Int,
+    suffix: String = ""
+) {
     // Count the number up from zero once the card is composed.
     var launched by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) { launched = true }
@@ -148,18 +150,17 @@ private fun StatCard(modifier: Modifier, title: String, value: Int, suffix: Stri
     Column(
         modifier = modifier
             .background(QuizSurface, RoundedCornerShape(16.dp))
-            .padding(20.dp)
+            .padding(Spacing.medium)
     ) {
         Text(
             text = title,
             color = QuizOnSurfaceMuted,
             style = MaterialTheme.typography.bodyMedium
         )
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(Spacing.small))
         Text(
             text = "$shown$suffix",
             style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.Bold,
             color = QuizOnSurface
         )
     }

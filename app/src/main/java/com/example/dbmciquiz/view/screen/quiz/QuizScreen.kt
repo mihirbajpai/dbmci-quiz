@@ -26,7 +26,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -44,6 +43,10 @@ import com.example.dbmciquiz.view.theme.QuizOnSurface
 import com.example.dbmciquiz.view.theme.QuizOnSurfaceMuted
 import com.example.dbmciquiz.view.theme.QuizSurfaceHigh
 import com.example.dbmciquiz.view.theme.QuizTrack
+import com.example.dbmciquiz.view.theme.Spacing
+
+/** Delay between consecutive option pills sliding in when a new question appears. */
+private const val OPTION_STAGGER_MS = 55
 
 @Composable
 fun QuizQuestionScreen(vm: QuizViewModel = viewModel(), navigateTo: (route: String) -> Unit) {
@@ -88,7 +91,7 @@ fun QuizQuestionScreen(vm: QuizViewModel = viewModel(), navigateTo: (route: Stri
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 20.dp, vertical = 16.dp),
+                .padding(horizontal = Spacing.large, vertical = Spacing.medium),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(
@@ -98,27 +101,25 @@ fun QuizQuestionScreen(vm: QuizViewModel = viewModel(), navigateTo: (route: Stri
                 Text(
                     text = "Quiz",
                     style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold,
                     color = QuizOnSurface
                 )
                 Spacer(Modifier.weight(1f))
                 Text(
                     text = "$streak",
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
                     color = if (streak >= QuizViewModel.STREAK_MILESTONE) QuizFlameLit else QuizOnSurface
                 )
-                Spacer(Modifier.width(4.dp))
+                Spacer(Modifier.width(Spacing.xSmall))
                 StreakIcon(streak = streak)
             }
-            Spacer(Modifier.height(20.dp))
+            Spacer(Modifier.height(Spacing.medium))
             Text(
                 text = "Question ${currentIndex + 1} of $questionCount",
                 color = QuizOnSurfaceMuted,
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.fillMaxWidth()
             )
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(Spacing.small))
             QuizProgressBar(current = currentIndex + 1, total = questionCount)
             // The question is a page: swipe it right-to-left to skip/advance. It fills the space
             // between the header and the button so there is room to drag and reveal the indicator.
@@ -129,11 +130,10 @@ fun QuizQuestionScreen(vm: QuizViewModel = viewModel(), navigateTo: (route: Stri
                 label = if (selectedOptionIndex == null) "Skip" else "Next",
                 onSwiped = vm::onSkipOrNext
             ) {
-                Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 28.dp)) {
+                Column(modifier = Modifier.padding(horizontal = Spacing.medium, vertical = 28.dp)) {
                     Text(
                         text = currentQuestion.text,
                         style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Center,
                         color = QuizOnSurface,
                         // Slide in from the right each time the question changes.
@@ -141,7 +141,7 @@ fun QuizQuestionScreen(vm: QuizViewModel = viewModel(), navigateTo: (route: Stri
                             .fillMaxWidth()
                             .enterFrom(key = currentIndex, dx = 40.dp)
                     )
-                    Spacer(Modifier.height(60.dp))
+                    Spacer(Modifier.height(Spacing.xLarge))
                     currentQuestion.options.forEachIndexed { index, option ->
                         val state = when {
                             answered.not() -> OptionState.DEFAULT
@@ -156,9 +156,9 @@ fun QuizQuestionScreen(vm: QuizViewModel = viewModel(), navigateTo: (route: Stri
                                     .enterFrom(
                                         key = currentIndex,
                                         dy = 16.dp,
-                                        delayMillis = index * 55
+                                        delayMillis = index * OPTION_STAGGER_MS
                                     )
-                                    .padding(vertical = 4.dp),
+                                    .padding(vertical = Spacing.xSmall),
                                 text = option,
                                 state = state,
                                 enabled = answered.not()
@@ -168,6 +168,8 @@ fun QuizQuestionScreen(vm: QuizViewModel = viewModel(), navigateTo: (route: Stri
                 }
             }
             val autoAdvancing by vm.autoAdvancing.collectAsStateWithLifecycle()
+            // Fixed-height slot so swapping the shorter button for the taller auto-advance bar
+            // doesn't resize the card above and shift it.
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -208,7 +210,7 @@ private fun QuizProgressBar(current: Int, total: Int) {
     LinearProgressIndicator(
         modifier = Modifier
             .fillMaxWidth()
-            .height(8.dp)
+            .height(Spacing.small)
             .clip(CircleShape),
         progress = { animatedProgress },
         color = QuizOnSurface,
@@ -229,10 +231,6 @@ private fun SkipNextButton(label: String, onClick: () -> Unit) {
             contentColor = QuizOnSurface
         )
     ) {
-        Text(
-            text = label,
-            fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.padding(vertical = 8.dp)
-        )
+        Text(text = label, modifier = Modifier.padding(vertical = Spacing.small))
     }
 }

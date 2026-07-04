@@ -26,11 +26,12 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.example.dbmciquiz.view.theme.QuizAccent
 import com.example.dbmciquiz.view.theme.QuizSurfaceHigh
 import com.example.dbmciquiz.view.theme.QuizTrack
+import com.example.dbmciquiz.view.theme.Spacing
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
@@ -71,7 +72,7 @@ fun SwipeToSkipCard(
             modifier = Modifier
                 .align(Alignment.CenterEnd)
                 .alpha(progress)
-                .padding(end = 24.dp)
+                .padding(end = Spacing.large)
         )
         // The swipeable page — a floating card that tilts around its own center as it slides.
         Surface(
@@ -125,14 +126,12 @@ private fun SkipIndicator(label: String, modifier: Modifier = Modifier) {
         Text(
             text = "»",
             style = MaterialTheme.typography.displayMedium,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary
+            color = QuizAccent
         )
         Text(
             text = label,
             style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary
+            color = QuizAccent
         )
     }
 }
