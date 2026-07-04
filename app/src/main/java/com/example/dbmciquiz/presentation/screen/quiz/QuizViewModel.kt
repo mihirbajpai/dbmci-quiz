@@ -1,11 +1,11 @@
-package com.example.dbmciquiz.ui.quiz
+package com.example.dbmciquiz.presentation.screen.quiz
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.dbmciquiz.data.DataState
+import com.example.dbmciquiz.presentation.DataState
 import com.example.dbmciquiz.data.model.Question
 import com.example.dbmciquiz.data.repository.QuizRepository
-import com.example.dbmciquiz.data.update
+import com.example.dbmciquiz.presentation.update
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow

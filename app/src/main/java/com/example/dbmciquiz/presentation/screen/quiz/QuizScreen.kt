@@ -1,5 +1,8 @@
-package com.example.dbmciquiz.ui.quiz
+package com.example.dbmciquiz.presentation.screen.quiz
 
+import com.example.dbmciquiz.presentation.Screen
+import com.example.dbmciquiz.presentation.screen.SplashScreen
+import com.example.dbmciquiz.presentation.screen.ErrorScreen
 import android.widget.Toast
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Box
@@ -35,16 +38,12 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.dbmciquiz.R
-import com.example.dbmciquiz.data.DataState
-import com.example.dbmciquiz.ui.quiz.components.AutoAdvanceBar
-import com.example.dbmciquiz.ui.quiz.components.OptionPill
-import com.example.dbmciquiz.ui.quiz.components.OptionState
-import com.example.dbmciquiz.ui.quiz.components.StreakIcon
-import com.example.dbmciquiz.ui.theme.QuizFlameLit
-import com.example.dbmciquiz.ui.theme.QuizOnSurface
-import com.example.dbmciquiz.ui.theme.QuizOnSurfaceMuted
-import com.example.dbmciquiz.ui.theme.QuizSurfaceHigh
-import com.example.dbmciquiz.ui.theme.QuizTrack
+import com.example.dbmciquiz.presentation.DataState
+import com.example.dbmciquiz.presentation.theme.QuizFlameLit
+import com.example.dbmciquiz.presentation.theme.QuizOnSurface
+import com.example.dbmciquiz.presentation.theme.QuizOnSurfaceMuted
+import com.example.dbmciquiz.presentation.theme.QuizSurfaceHigh
+import com.example.dbmciquiz.presentation.theme.QuizTrack
 
 @Composable
 fun QuizQuestionScreen(vm: QuizViewModel = viewModel(), navigateTo: (route: String) -> Unit) {

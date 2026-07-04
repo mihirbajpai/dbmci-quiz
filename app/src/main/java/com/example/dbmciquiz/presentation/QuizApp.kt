@@ -1,4 +1,4 @@
-package com.example.dbmciquiz.ui.quiz
+package com.example.dbmciquiz.presentation
 
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -13,6 +13,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.dbmciquiz.presentation.screen.ResultScreen
+import com.example.dbmciquiz.presentation.screen.quiz.QuizQuestionScreen
 
 /**
  * Root of the quiz experience: Quiz ⇄ Result navigation on the app background.
@@ -66,5 +68,18 @@ fun QuizApp() {
                 }
             }
         }
+    }
+}
+
+/**
+ * Navigation destinations. Each carries its base [route]; [withArgs] appends positional
+ * arguments (used by the Result destination to pass its score data).
+ */
+enum class Screen(val route: String) {
+    QUIZ("quiz"),
+    RESULT("result");
+
+    fun withArgs(vararg args: Any): String {
+        return "$route/${args.joinToString("/")}"
     }
 }

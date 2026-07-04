@@ -1,4 +1,4 @@
-package com.example.dbmciquiz.ui.quiz
+package com.example.dbmciquiz.presentation.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,8 +21,8 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.dbmciquiz.R
-import com.example.dbmciquiz.ui.theme.QuizOnSurface
-import com.example.dbmciquiz.ui.theme.QuizOnSurfaceMuted
+import com.example.dbmciquiz.presentation.theme.QuizOnSurface
+import com.example.dbmciquiz.presentation.theme.QuizOnSurfaceMuted
 
 @Composable
 fun SplashScreen() {

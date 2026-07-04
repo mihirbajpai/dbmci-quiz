@@ -20,7 +20,23 @@
       "Bash(python3 -)",
       "Bash([ -e \"$DST\" ])",
       "Bash(exit 1)",
-      "Read(//Users/Shared/**)"
+      "Read(//Users/Shared/**)",
+      "Bash(mkdir -p domain/model presentation/common presentation/navigation presentation/quiz/components presentation/theme)",
+      "Bash(mv data/model/Question.kt domain/model/Question.kt)",
+      "Bash(mv data/DataState.kt presentation/common/DataState.kt)",
+      "Bash(mv ui/quiz/QuizApp.kt presentation/navigation/QuizApp.kt)",
+      "Bash(mv ui/quiz/QuizDestinations.kt presentation/navigation/QuizDestinations.kt)",
+      "Bash(xargs -0 perl -pi -e ' *)",
+      "Bash(perl -pi -e 's/^package com\\\\.example\\\\.dbmciquiz\\\\.data$/package com.example.dbmciquiz.presentation.common/' presentation/common/DataState.kt)",
+      "Bash(perl -pi -e 's/^package com\\\\.example\\\\.dbmciquiz\\\\.presentation\\\\.quiz$/package com.example.dbmciquiz.presentation.navigation/' presentation/navigation/QuizApp.kt presentation/navigation/QuizDestinations.kt)",
+      "Bash(perl -pi -e 's/import com\\\\.example\\\\.dbmciquiz\\\\.presentation\\\\.quiz\\\\.QuizApp/import com.example.dbmciquiz.presentation.navigation.QuizApp/' MainActivity.kt)",
+      "Bash(perl -0pi -e 's/\\(package com\\\\.example\\\\.dbmciquiz\\\\.presentation\\\\.navigation\\\\n\\)/${1}\\\\nimport com.example.dbmciquiz.presentation.quiz.QuizQuestionScreen\\\\nimport com.example.dbmciquiz.presentation.quiz.ResultScreen/' presentation/navigation/QuizApp.kt)",
+      "Bash(perl -0pi -e 's/\\(package com\\\\.example\\\\.dbmciquiz\\\\.presentation\\\\.quiz\\\\n\\)/${1}\\\\nimport com.example.dbmciquiz.presentation.navigation.Screen/' presentation/quiz/QuizScreen.kt)",
+      "Bash(mkdir -p presentation/splash presentation/error presentation/result)",
+      "Bash(mv presentation/quiz/SplashScreen.kt presentation/splash/SplashScreen.kt)",
+      "Bash(mv presentation/quiz/ErrorScreen.kt presentation/error/ErrorScreen.kt)",
+      "Bash(mv presentation/quiz/ResultScreen.kt presentation/result/ResultScreen.kt)",
+      "Bash(perl -pi -e 's/^package com\\\\.example\\\\.dbmciquiz\\\\.presentation\\\\.quiz$/package com.example.dbmciquiz.presentation.splash/' presentation/splash/SplashScreen.kt)"
     ]
   }
 }

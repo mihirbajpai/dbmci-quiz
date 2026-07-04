@@ -1,4 +1,4 @@
-package com.example.dbmciquiz.ui.quiz.components
+package com.example.dbmciquiz.presentation.screen.quiz
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
@@ -11,7 +11,6 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.dbmciquiz.R
-import com.example.dbmciquiz.ui.quiz.QuizViewModel
 
 /**
  * Single streak flame. Frozen/unlit below [QuizViewModel.STREAK_MILESTONE]; at or above it the

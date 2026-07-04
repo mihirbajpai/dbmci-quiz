@@ -1,4 +1,4 @@
-package com.example.dbmciquiz.ui.quiz.components
+package com.example.dbmciquiz.presentation.screen.quiz
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
@@ -23,9 +23,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.dbmciquiz.ui.theme.QuizOnSurface
-import com.example.dbmciquiz.ui.theme.QuizSurfaceHigh
-import com.example.dbmciquiz.ui.theme.QuizTrack
+import com.example.dbmciquiz.presentation.theme.QuizOnSurface
+import com.example.dbmciquiz.presentation.theme.QuizSurfaceHigh
+import com.example.dbmciquiz.presentation.theme.QuizTrack
 
 /**
  * Bottom bar shown after answering: a sliding progress bar counts down [durationMs] before
