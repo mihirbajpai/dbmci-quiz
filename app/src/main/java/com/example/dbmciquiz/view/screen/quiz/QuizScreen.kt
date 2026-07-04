@@ -1,8 +1,5 @@
 package com.example.dbmciquiz.view.screen.quiz
 
-import com.example.dbmciquiz.view.Screen
-import com.example.dbmciquiz.view.screen.SplashScreen
-import com.example.dbmciquiz.view.screen.ErrorScreen
 import android.widget.Toast
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Box
@@ -33,12 +30,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.animateLottieCompositionAsState
-import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.dbmciquiz.R
 import com.example.dbmciquiz.view.DataState
+import com.example.dbmciquiz.view.Screen
+import com.example.dbmciquiz.view.component.LottiePlayer
+import com.example.dbmciquiz.view.screen.ErrorScreen
+import com.example.dbmciquiz.view.screen.SplashScreen
 import com.example.dbmciquiz.view.theme.QuizFlameLit
 import com.example.dbmciquiz.view.theme.QuizOnSurface
 import com.example.dbmciquiz.view.theme.QuizOnSurfaceMuted
@@ -173,7 +170,9 @@ fun QuizQuestionScreen(vm: QuizViewModel = viewModel(), navigateTo: (route: Stri
                 Toast.makeText(context, "🔥 New max streak record!", Toast.LENGTH_SHORT).show()
             }
         }
-        if (showCelebration) CelebrationOverlay()
+        if (showCelebration) {
+            LottiePlayer(res = R.raw.celebration, modifier = Modifier.fillMaxSize())
+        }
     }
 }
 
@@ -209,26 +208,6 @@ private fun SkipNextButton(label: String, onClick: () -> Unit) {
             text = label,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.padding(vertical = 8.dp)
-        )
-    }
-}
-
-/** Full-screen celebration Lottie (plays once); the caller controls how long it stays visible. */
-@Composable
-private fun CelebrationOverlay() {
-    val composition by rememberLottieComposition(
-        LottieCompositionSpec.RawRes(R.raw.celebration)
-    )
-    val progress by animateLottieCompositionAsState(
-        composition = composition,
-        iterations = 1,
-        isPlaying = true
-    )
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        LottieAnimation(
-            composition = composition,
-            progress = { progress },
-            modifier = Modifier.fillMaxSize()
         )
     }
 }

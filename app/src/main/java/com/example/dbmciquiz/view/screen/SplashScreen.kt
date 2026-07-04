@@ -10,17 +10,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.animateLottieCompositionAsState
-import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.dbmciquiz.R
+import com.example.dbmciquiz.view.component.LottiePlayer
 import com.example.dbmciquiz.view.theme.QuizOnSurface
 import com.example.dbmciquiz.view.theme.QuizOnSurfaceMuted
 
@@ -33,18 +29,10 @@ fun SplashScreen() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        val composition by rememberLottieComposition(
-            LottieCompositionSpec.RawRes(R.raw.splash_questions)
-        )
-        val progress by animateLottieCompositionAsState(
-            composition = composition,
-            iterations = LottieConstants.IterateForever,
-            isPlaying = true
-        )
-        LottieAnimation(
-            composition = composition,
-            progress = { progress },
-            modifier = Modifier.size(220.dp)
+        LottiePlayer(
+            res = R.raw.splash_questions,
+            modifier = Modifier.size(220.dp),
+            iterations = LottieConstants.IterateForever
         )
         Spacer(Modifier.height(16.dp))
         Text(
