@@ -32,23 +32,17 @@ import com.example.dbmciquiz.view.theme.Spacing
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
-/** Fraction of the card's width the page must be dragged past for the swipe to commit. */
+/** How far you must drag (fraction of card width) to commit the swipe. */
 private const val SWIPE_COMMIT_FRACTION = 0.35f
 
-/** How far the page flings off-screen when a swipe completes, as a multiple of the card width. */
+/** How far the card flings off-screen on commit, in card widths. */
 private const val SWIPE_OFF_FRACTION = 1.3f
-
-/** Maximum tilt (degrees) the page leans to when dragged a full width. */
 private const val MAX_TILT_DEGREES = 8f
-
-/** Duration (ms) of the fling-off animation once a swipe commits. */
 private const val FLING_DURATION_MS = 250
 
 /**
- * Wraps [content] in a Tinder-style page that can be swiped **left** (right-to-left) to trigger
- * [onSwiped]. As the page slides away it reveals a "[label]" indicator behind it. Past
- * [SWIPE_COMMIT_FRACTION] of the width the swipe completes; otherwise it springs back. Rightward
- * drags are ignored.
+ * On left swipe it fire [onSwiped], revealing a "[label]" hint behind it. Past
+ * [SWIPE_COMMIT_FRACTION] of the width it commits, otherwise it springs back. Right-to-left only.
  */
 @Composable
 fun SwipeToSkipCard(
@@ -63,7 +57,7 @@ fun SwipeToSkipCard(
     val progress = if (width == 0) 0f else (-offsetX.value / width).coerceIn(0f, 1f)
 
     Box(modifier = modifier.onSizeChanged { width = it.width }) {
-        // Behind the page: the skip indicator, fading in as the page slides left.
+        // The skip hint sits behind the page, fading in as it slides.
         SkipIndicator(
             label = label,
             modifier = Modifier
@@ -71,7 +65,6 @@ fun SwipeToSkipCard(
                 .alpha(progress)
                 .padding(end = Spacing.large)
         )
-        // The swipeable page — a floating card that tilts around its own center as it slides.
         Surface(
             modifier = Modifier
                 .align(Alignment.Center)
@@ -83,15 +76,15 @@ fun SwipeToSkipCard(
                 .pointerInput(Unit) {
                     detectHorizontalDragGestures(
                         onHorizontalDrag = { _, dragAmount ->
-                            // Clamp to <= 0 so only right-to-left drags move the page.
+                            // Clamp to <= 0: only right-to-left drags move the page.
                             scope.launch {
-                                offsetX.snapTo(
-                                    (offsetX.value + dragAmount).coerceAtMost(0f)
-                                )
+                                offsetX.snapTo((offsetX.value + dragAmount).coerceAtMost(0f))
                             }
                         },
                         onDragEnd = {
                             scope.launch {
+                                // Past the threshold: fling off-screen, advance, then snap back to
+                                // center so the next question starts centred. Otherwise, spring back.
                                 if (-offsetX.value > width * SWIPE_COMMIT_FRACTION) {
                                     offsetX.animateTo(
                                         -width * SWIPE_OFF_FRACTION,

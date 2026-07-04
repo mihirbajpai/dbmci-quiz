@@ -9,7 +9,7 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 
-/** Renders a raw-res Lottie. When [isPlaying] is false it holds the first frame. */
+/** Plays a raw-res Lottie; with [isPlaying] false it just holds the first frame. */
 @Composable
 fun LottiePlayer(
     @RawRes res: Int,

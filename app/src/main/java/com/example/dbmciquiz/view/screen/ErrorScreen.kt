@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import com.example.dbmciquiz.view.theme.Spacing
 
-/** Full-screen error state shown when the quiz fails to load, with a Retry action. */
+/** Shown when the quiz fails to load — message + Retry. */
 @Composable
 fun ErrorScreen(message: String?, onRetry: () -> Unit) {
     Column(

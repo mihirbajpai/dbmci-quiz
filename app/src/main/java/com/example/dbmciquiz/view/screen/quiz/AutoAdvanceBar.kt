@@ -26,12 +26,10 @@ import androidx.compose.ui.unit.dp
 import com.example.dbmciquiz.view.theme.Spacing
 
 /**
- * Bottom bar shown after answering: a sliding progress bar counts down [durationMs] before
- * the quiz auto-advances. Tapping Cancel stops the countdown (the caller then swaps Skip -> Next).
+ * Post-answer bar: a bar counts down [durationMs], then the quiz auto-advances. Cancel stops it
  */
 @Composable
 fun AutoAdvanceBar(durationMs: Long, onCancel: () -> Unit) {
-    // Drive the sliding bar locally so it exactly mirrors the countdown window.
     val progress = remember { Animatable(0f) }
     LaunchedEffect(Unit) {
         progress.animateTo(
@@ -57,7 +55,6 @@ fun AutoAdvanceBar(durationMs: Long, onCancel: () -> Unit) {
                 fontWeight = FontWeight.Medium,
                 style = MaterialTheme.typography.bodyMedium
             )
-            // Plain clickable text (not a TextButton, whose min-height would unbalance the padding).
             Text(
                 text = "Cancel",
                 color = MaterialTheme.colorScheme.primary,

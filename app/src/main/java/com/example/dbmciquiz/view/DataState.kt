@@ -3,10 +3,7 @@ package com.example.dbmciquiz.view
 import kotlinx.coroutines.flow.MutableStateFlow
 
 /**
- * Loading / Success / Failure wrapper for an async data fetch.
- *
- * Created in the ViewModel (presentation layer); the data/domain layers stay unaware of it.
- * Use [update] on a state flow to run a fetch and map the result automatically.
+ * Loading / Success / Failure for an async fetch. Use [update] to map the result.
  */
 sealed interface DataState<out T> {
     class Loading<T> : DataState<T>
@@ -14,7 +11,7 @@ sealed interface DataState<out T> {
     data class Failure(val error: Throwable) : DataState<Nothing>
 }
 
-/** Sets this flow to [DataState.Loading], runs [fetchData], then assigns Success/Failure. */
+/** Runs [fetchData] behind a Loading state, then stores Success or Failure. */
 suspend fun <T> MutableStateFlow<DataState<T>>.update(fetchData: suspend () -> T) {
     value = DataState.Loading()
     value = try {

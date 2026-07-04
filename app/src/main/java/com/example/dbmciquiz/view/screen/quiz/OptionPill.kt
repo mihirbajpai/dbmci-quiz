@@ -19,7 +19,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.dbmciquiz.view.theme.Spacing
 
-/** Visual state of an answer option once (or before) the question is answered. */
+/** An option's state before/after the question is answered. */
 enum class OptionState { DEFAULT, CORRECT, WRONG }
 
 @Composable
@@ -35,7 +35,7 @@ fun OptionPill(
         OptionState.CORRECT -> MaterialTheme.colorScheme.tertiary // correct-answer green
         OptionState.WRONG -> MaterialTheme.colorScheme.error
     }
-    // Smoothly reveal the correct/incorrect colour when answered.
+    // Smoothly reveal the correct/incorrect color when answered.
     val background by animateColorAsState(targetColor, label = "optionColor")
     Box(
         modifier = modifier

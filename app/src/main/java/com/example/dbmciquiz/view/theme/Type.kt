@@ -6,8 +6,8 @@ import androidx.compose.ui.text.font.FontWeight
 private val Default = Typography()
 
 /**
- * App type scale. Display/headline/title styles carry the app's bold emphasis and labels (button
- * text) are semi-bold, so screens use the style alone instead of repeating `fontWeight`.
+ * Type scale with the app's weights baked in (bold display/headline/title, semi-bold button
+ * labels), so screens use the style alone instead of repeating `fontWeight`.
  */
 val Typography = Typography(
     displayMedium = Default.displayMedium.copy(fontWeight = FontWeight.Bold),

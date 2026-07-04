@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.example.dbmciquiz.view.component.enterFrom
 import com.example.dbmciquiz.view.theme.Spacing
 
-/** Delay between consecutive stat cards sliding in. */
+/** Delay between each stat card sliding in. */
 private const val STAT_STAGGER_MS = 90
 
 /** How long a stat's number takes to count up from zero. */
@@ -136,7 +136,7 @@ private fun StatCard(
     value: Int,
     suffix: String = ""
 ) {
-    // Count the number up from zero once the card is composed.
+    // Count up from zero once the card first shows.
     var launched by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) { launched = true }
     val shown by animateIntAsState(

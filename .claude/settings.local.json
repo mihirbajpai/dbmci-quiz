@@ -37,7 +37,9 @@
       "Bash(mv presentation/quiz/ErrorScreen.kt presentation/error/ErrorScreen.kt)",
       "Bash(mv presentation/quiz/ResultScreen.kt presentation/result/ResultScreen.kt)",
       "Bash(perl -pi -e 's/^package com\\\\.example\\\\.dbmciquiz\\\\.presentation\\\\.quiz$/package com.example.dbmciquiz.presentation.splash/' presentation/splash/SplashScreen.kt)",
-      "Bash(sort -t. -k1 -n)"
+      "Bash(sort -t. -k1 -n)",
+      "Bash(cp local.properties /tmp/lp_bak)",
+      "Bash(./gradlew :app:processDebugResources --console=plain)"
     ]
   }
 }

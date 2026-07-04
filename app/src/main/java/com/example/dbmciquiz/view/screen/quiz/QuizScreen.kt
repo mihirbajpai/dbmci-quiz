@@ -40,8 +40,8 @@ import com.example.dbmciquiz.view.screen.ErrorScreen
 import com.example.dbmciquiz.view.screen.SplashScreen
 import com.example.dbmciquiz.view.theme.Spacing
 
-/** Delay between consecutive option pills sliding in when a new question appears. */
-private const val OPTION_STAGGER_MS = 55
+/** Delay between each option sliding in on a new question. */
+private const val OPTION_STAGGER_MS = 50
 
 @Composable
 fun QuizQuestionScreen(vm: QuizViewModel = viewModel(), navigateTo: (route: String) -> Unit) {
@@ -61,8 +61,7 @@ fun QuizQuestionScreen(vm: QuizViewModel = viewModel(), navigateTo: (route: Stri
     val selectedOptionIndex by vm.selectedOptionIndex.collectAsStateWithLifecycle()
     val streak by vm.streak.collectAsStateWithLifecycle()
 
-    // currentIndex passing the last question means the quiz is finished. Navigation is a side
-    // effect, so it runs from a LaunchedEffect — never directly during composition.
+    // Past the last question = finished. Navigates to result screen
     val finished = currentIndex >= questions.size
     LaunchedEffect(finished) {
         if (finished.not()) return@LaunchedEffect
@@ -75,7 +74,7 @@ fun QuizQuestionScreen(vm: QuizViewModel = viewModel(), navigateTo: (route: Stri
             )
         )
     }
-    // The effect fires after this composition, so the finished frame still runs — nothing to draw.
+    // The effect runs after this frame, so the finished frame still composes — draw nothing.
     if (finished) return
 
     val currentQuestion = questions[currentIndex]
@@ -102,7 +101,6 @@ fun QuizQuestionScreen(vm: QuizViewModel = viewModel(), navigateTo: (route: Stri
                 Text(
                     text = "$streak",
                     style = MaterialTheme.typography.titleMedium,
-                    // secondary is the streak-flame colour once the milestone is hit.
                     color = if (streak >= QuizViewModel.STREAK_MILESTONE) {
                         MaterialTheme.colorScheme.secondary
                     } else {
@@ -121,8 +119,7 @@ fun QuizQuestionScreen(vm: QuizViewModel = viewModel(), navigateTo: (route: Stri
             )
             Spacer(Modifier.height(Spacing.small))
             QuizProgressBar(current = currentIndex + 1, total = questionCount)
-            // The question is a page: swipe it right-to-left to skip/advance. It fills the space
-            // between the header and the button so there is room to drag and reveal the indicator.
+            // Swipeable question page
             SwipeToSkipCard(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -136,7 +133,6 @@ fun QuizQuestionScreen(vm: QuizViewModel = viewModel(), navigateTo: (route: Stri
                         style = MaterialTheme.typography.headlineSmall,
                         textAlign = TextAlign.Center,
                         color = MaterialTheme.colorScheme.onSurface,
-                        // Slide in from the right each time the question changes.
                         modifier = Modifier
                             .fillMaxWidth()
                             .enterFrom(key = currentIndex, dx = 40.dp)
@@ -151,7 +147,6 @@ fun QuizQuestionScreen(vm: QuizViewModel = viewModel(), navigateTo: (route: Stri
                         }
                         key(index) {
                             OptionPill(
-                                // Stagger the options up as the question appears.
                                 modifier = Modifier
                                     .enterFrom(
                                         key = currentIndex,
@@ -168,8 +163,6 @@ fun QuizQuestionScreen(vm: QuizViewModel = viewModel(), navigateTo: (route: Stri
                 }
             }
             val autoAdvancing by vm.autoAdvancing.collectAsStateWithLifecycle()
-            // Fixed-height slot so swapping the shorter button for the taller auto-advance bar
-            // doesn't resize the card above and shift it.
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -194,7 +187,7 @@ fun QuizQuestionScreen(vm: QuizViewModel = viewModel(), navigateTo: (route: Stri
         val context = LocalContext.current
         LaunchedEffect(showCelebration) {
             if (showCelebration) {
-                Toast.makeText(context, "🔥 New max streak record!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "New max streak record!", Toast.LENGTH_SHORT).show()
             }
         }
         if (showCelebration) {

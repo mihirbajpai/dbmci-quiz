@@ -2,11 +2,9 @@ package com.example.dbmciquiz.view.theme
 
 import androidx.compose.ui.graphics.Color
 
-// Raw palette values. Screens never use these directly — they read MaterialTheme.colorScheme
-// (via its Material slots and the semantic aliases in Theme.kt), which resolves to the dark or
-// light scheme with the system theme.
+// Raw values. Screens read MaterialTheme.colorScheme (see Theme.kt), not these directly.
 
-// ---- Dark (mockup default) ----
+// ---- Dark ----
 val DarkBackground = Color(0xFF0D1117)
 val DarkSurface = Color(0xFF1B222C)        // option pill / card surface
 val DarkSurfaceHigh = Color(0xFF232B36)    // raised surface (buttons, cards)
@@ -20,8 +18,6 @@ val DarkAccent = Color(0xFFB9D8FF)         // primary accent
 val DarkOnAccent = Color(0xFF0D1117)       // text on accent
 
 // ---- Light ----
-// bg < surface < surfaceHigh in lightness, mirroring the dark set so elevation reads the same
-// (raised cards lighter, inset pills darker). Answered pills are soft tints so dark text stays legible.
 val LightBackground = Color(0xFFE8ECF2)
 val LightSurface = Color(0xFFF3F5F9)
 val LightSurfaceHigh = Color(0xFFFFFFFF)

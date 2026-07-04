@@ -7,7 +7,6 @@ import retrofit2.Retrofit
 
 object NetworkModule {
     private const val BASE_URL = "https://gist.githubusercontent.com/"
-
     private val json = Json { ignoreUnknownKeys = true }
 
     val quizService: QuizService by lazy {

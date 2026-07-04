@@ -2,9 +2,9 @@ package com.example.dbmciquiz.view.screen.quiz
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.dbmciquiz.view.DataState
 import com.example.dbmciquiz.data.model.Question
 import com.example.dbmciquiz.data.repository.QuizRepository
+import com.example.dbmciquiz.view.DataState
 import com.example.dbmciquiz.view.update
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -14,13 +14,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.milliseconds
 
-/**
- * Holds quiz state. Values the UI observes are read-only [StateFlow]s backed by private
- * [MutableStateFlow]s; scores the UI never observes (read once at finish and passed to the Result
- * screen as nav args) are plain vars. The load lifecycle uses [DataState]; navigation is driven by
- * the UI reacting to [questionsState] (splash → quiz) and [currentIndex] passing the last question
- * (quiz → result).
- */
 class QuizViewModel : ViewModel() {
     private val _questionsState = MutableStateFlow<DataState<List<Question>>>(DataState.Loading())
     val questionsState: StateFlow<DataState<List<Question>>> = _questionsState.asStateFlow()
@@ -42,7 +35,7 @@ class QuizViewModel : ViewModel() {
     private val _showCelebration = MutableStateFlow(false)
     val showCelebration: StateFlow<Boolean> = _showCelebration.asStateFlow()
 
-    // Read once at finish and passed to the Result screen as nav args — no StateFlow needed.
+    /** [longestStreak], [correctCount] and [skippedCount] read once at finish and handed to Result as nav args.*/
     var longestStreak = 0
         private set
     var correctCount = 0
@@ -50,6 +43,7 @@ class QuizViewModel : ViewModel() {
     var skippedCount = 0
         private set
 
+    /** [autoAdvanceJob] is used to handle [autoAdvancing]*/
     private var autoAdvanceJob: Job? = null
 
     init {
@@ -65,14 +59,14 @@ class QuizViewModel : ViewModel() {
     fun selectOption(index: Int) {
         val question =
             (_questionsState.value as? DataState.Success)?.value?.getOrNull(_currentIndex.value)
-        // Ignore if there's no current question or it's already answered.
+        // Ignore if no current question, or already answered.
         if (question == null || _selectedOptionIndex.value != null) return
         _selectedOptionIndex.value = index
 
         if (index == question.correctIndex) {
             _streak.value++
             correctCount++
-            // A new personal-best streak of at least the milestone triggers a celebration.
+            // New personal best at/above the milestone.
             if (_streak.value > longestStreak) {
                 longestStreak = _streak.value
                 if (longestStreak >= STREAK_MILESTONE) celebrate()
@@ -92,12 +86,14 @@ class QuizViewModel : ViewModel() {
         advance()
     }
 
+    /** Cancel text in [AutoAdvanceBar]: cancel the auto advance progress. */
     fun cancelAutoAdvance() {
         autoAdvanceJob?.cancel()
         autoAdvanceJob = null
         _autoAdvancing.value = false
     }
 
+    /** Hits after answer lock */
     private fun startAutoAdvance() {
         _autoAdvancing.value = true
         autoAdvanceJob = viewModelScope.launch {
@@ -107,6 +103,7 @@ class QuizViewModel : ViewModel() {
         }
     }
 
+    /** Shows the celebration overlay animation on personal record */
     private fun celebrate() {
         viewModelScope.launch {
             _showCelebration.value = true
@@ -116,7 +113,7 @@ class QuizViewModel : ViewModel() {
     }
 
     private fun advance() {
-        // Past the last question → currentIndex reaches questions.size, which the UI reads as finished.
+        // currentIndex past the last question is what the UI reads as "finished".
         _currentIndex.value++
         _selectedOptionIndex.value = null
     }

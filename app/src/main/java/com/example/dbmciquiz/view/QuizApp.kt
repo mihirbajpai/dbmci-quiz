@@ -16,18 +16,10 @@ import androidx.navigation.navArgument
 import com.example.dbmciquiz.view.screen.ResultScreen
 import com.example.dbmciquiz.view.screen.quiz.QuizQuestionScreen
 
-/**
- * Root of the quiz experience: Quiz ⇄ Result navigation on the app background.
- *
- * The [QuizViewModel] is scoped to the Quiz destination's back-stack entry (obtained inside
- * [QuizQuestionScreen]), so navigating to a fresh Quiz entry on Restart gives a brand-new
- * ViewModel — no explicit reset needed. Result data travels as route arguments, so the Result
- * screen never touches the ViewModel.
- */
 @Composable
 fun QuizApp() {
     val navController = rememberNavController()
-    // Result route pattern: base route + typed arg placeholders.
+    // Result route: base + typed arg placeholders.
     val resultRoute = "${Screen.RESULT.route}/{correct}/{total}/{skipped}/{longest_streak}"
     NavHost(
         modifier = Modifier
@@ -71,10 +63,7 @@ fun QuizApp() {
     }
 }
 
-/**
- * Navigation destinations. Each carries its base [route]; [withArgs] appends positional
- * arguments (used by the Result destination to pass its score data).
- */
+/** Nav destinations. [withArgs] appends positional args — Result passes its scores this way. */
 enum class Screen(val route: String) {
     QUIZ("quiz"),
     RESULT("result");

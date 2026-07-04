@@ -16,13 +16,12 @@ import kotlin.time.Duration.Companion.milliseconds
 private const val ENTER_DURATION_MS = 350
 
 /**
- * Fades [this] in while sliding it from a ([dx], [dy]) offset to its resting position — replayed
- * whenever [key] changes and on first composition. [delayMillis] staggers grouped items (e.g. the
- * options of a question). Values are applied in the draw phase, so the animation never recomposes.
+ * Fades and slides [this] in from a ([dx], [dy]) offset whenever [key] changes. [delayMillis]
+ * staggers grouped items.
  */
 @Composable
 fun Modifier.enterFrom(key: Any?, dx: Dp = 0.dp, dy: Dp = 0.dp, delayMillis: Int = 0): Modifier {
-    // A fresh Animatable per [key] starts the item hidden (0) before it animates in (1).
+    // New Animatable per key: the item starts hidden, then animates in.
     val progress = remember(key) { Animatable(0f) }
     LaunchedEffect(key) {
         if (delayMillis > 0) delay(delayMillis.toLong().milliseconds)

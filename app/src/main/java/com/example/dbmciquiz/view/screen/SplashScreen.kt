@@ -18,6 +18,7 @@ import com.example.dbmciquiz.R
 import com.example.dbmciquiz.view.component.LottiePlayer
 import com.example.dbmciquiz.view.theme.Spacing
 
+/** [SplashScreen] Shows up while data is loading. */
 @Composable
 fun SplashScreen() {
     Column(

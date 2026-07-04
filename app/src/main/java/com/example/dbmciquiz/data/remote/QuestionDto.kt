@@ -4,10 +4,6 @@ import com.example.dbmciquiz.data.model.Question
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * Network representation of a question, mapped 1:1 from the remote JSON via [SerialName].
- * Kept separate from the domain [Question] so wire changes don't leak into the UI.
- */
 @Serializable
 data class QuestionDto(
     @SerialName("id") val id: Int,
@@ -16,7 +12,6 @@ data class QuestionDto(
     @SerialName("correctOptionIndex") val correctOptionIndex: Int,
 )
 
-/** Maps the network DTO to the domain model. */
 fun QuestionDto.toDomain(): Question = Question(
     id = id,
     text = question,

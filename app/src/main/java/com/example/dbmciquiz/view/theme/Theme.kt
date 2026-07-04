@@ -6,11 +6,7 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
-// The palette maps onto Material's ColorScheme slots, so everything flows through
-// MaterialTheme.colorScheme — which already swaps between these two schemes with the system theme.
-// The comment on each slot notes the app role it plays (tertiary/secondary are repurposed for the
-// correct-answer and streak-flame colours, which have no dedicated Material slot).
-
+// Everything reads MaterialTheme.colorScheme, which swaps light/dark on its own.
 private val DarkColors = darkColorScheme(
     primary = DarkAccent,
     onPrimary = DarkOnAccent,
