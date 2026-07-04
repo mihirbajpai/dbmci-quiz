@@ -23,10 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.dbmciquiz.view.theme.QuizAccent
-import com.example.dbmciquiz.view.theme.QuizOnSurface
-import com.example.dbmciquiz.view.theme.QuizSurfaceHigh
-import com.example.dbmciquiz.view.theme.QuizTrack
 import com.example.dbmciquiz.view.theme.Spacing
 
 /**
@@ -46,7 +42,7 @@ fun AutoAdvanceBar(durationMs: Long, onCancel: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(QuizSurfaceHigh, RoundedCornerShape(20.dp))
+            .background(MaterialTheme.colorScheme.surfaceContainerHigh, RoundedCornerShape(20.dp))
             .padding(horizontal = Spacing.medium, vertical = 14.dp),
         verticalArrangement = Arrangement.spacedBy(Spacing.small)
     ) {
@@ -57,14 +53,14 @@ fun AutoAdvanceBar(durationMs: Long, onCancel: () -> Unit) {
         ) {
             Text(
                 text = "Moving to next question…",
-                color = QuizOnSurface,
+                color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Medium,
                 style = MaterialTheme.typography.bodyMedium
             )
             // Plain clickable text (not a TextButton, whose min-height would unbalance the padding).
             Text(
                 text = "Cancel",
-                color = QuizAccent,
+                color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Medium,
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier
@@ -75,8 +71,8 @@ fun AutoAdvanceBar(durationMs: Long, onCancel: () -> Unit) {
         }
         LinearProgressIndicator(
             progress = { progress.value },
-            color = QuizAccent,
-            trackColor = QuizTrack,
+            color = MaterialTheme.colorScheme.primary,
+            trackColor = MaterialTheme.colorScheme.outlineVariant,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(6.dp)

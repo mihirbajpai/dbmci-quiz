@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,10 +17,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.dbmciquiz.view.theme.QuizCorrect
-import com.example.dbmciquiz.view.theme.QuizOnSurface
-import com.example.dbmciquiz.view.theme.QuizSurface
-import com.example.dbmciquiz.view.theme.QuizWrong
 import com.example.dbmciquiz.view.theme.Spacing
 
 /** Visual state of an answer option once (or before) the question is answered. */
@@ -34,9 +31,9 @@ fun OptionPill(
     onClick: () -> Unit
 ) {
     val targetColor = when (state) {
-        OptionState.DEFAULT -> QuizSurface
-        OptionState.CORRECT -> QuizCorrect
-        OptionState.WRONG -> QuizWrong
+        OptionState.DEFAULT -> MaterialTheme.colorScheme.surface
+        OptionState.CORRECT -> MaterialTheme.colorScheme.tertiary // correct-answer green
+        OptionState.WRONG -> MaterialTheme.colorScheme.error
     }
     // Smoothly reveal the correct/incorrect colour when answered.
     val background by animateColorAsState(targetColor, label = "optionColor")
@@ -51,7 +48,7 @@ fun OptionPill(
     ) {
         Text(
             text = text,
-            color = QuizOnSurface,
+            color = MaterialTheme.colorScheme.onSurface,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Medium,
             modifier = Modifier.fillMaxWidth()

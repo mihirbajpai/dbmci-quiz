@@ -28,9 +28,6 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.example.dbmciquiz.view.theme.QuizAccent
-import com.example.dbmciquiz.view.theme.QuizSurfaceHigh
-import com.example.dbmciquiz.view.theme.QuizTrack
 import com.example.dbmciquiz.view.theme.Spacing
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -110,9 +107,9 @@ fun SwipeToSkipCard(
                     )
                 },
             shape = RoundedCornerShape(28.dp),
-            color = QuizSurfaceHigh,
+            color = MaterialTheme.colorScheme.surfaceContainerHigh,
             shadowElevation = 12.dp,
-            border = BorderStroke(1.dp, QuizTrack)
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
         ) {
             content()
         }
@@ -126,12 +123,12 @@ private fun SkipIndicator(label: String, modifier: Modifier = Modifier) {
         Text(
             text = "»",
             style = MaterialTheme.typography.displayMedium,
-            color = QuizAccent
+            color = MaterialTheme.colorScheme.primary
         )
         Text(
             text = label,
             style = MaterialTheme.typography.titleMedium,
-            color = QuizAccent
+            color = MaterialTheme.colorScheme.primary
         )
     }
 }

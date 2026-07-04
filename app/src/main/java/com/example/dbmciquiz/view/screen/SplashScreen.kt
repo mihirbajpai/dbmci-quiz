@@ -16,8 +16,6 @@ import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieConstants
 import com.example.dbmciquiz.R
 import com.example.dbmciquiz.view.component.LottiePlayer
-import com.example.dbmciquiz.view.theme.QuizOnSurface
-import com.example.dbmciquiz.view.theme.QuizOnSurfaceMuted
 import com.example.dbmciquiz.view.theme.Spacing
 
 @Composable
@@ -38,12 +36,12 @@ fun SplashScreen() {
         Text(
             text = "DBMCI Quiz",
             style = MaterialTheme.typography.titleLarge,
-            color = QuizOnSurface
+            color = MaterialTheme.colorScheme.onSurface
         )
         Spacer(Modifier.height(Spacing.xSmall))
         Text(
             text = "Loading your questions…",
-            color = QuizOnSurfaceMuted
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }

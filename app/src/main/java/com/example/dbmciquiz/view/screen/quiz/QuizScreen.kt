@@ -38,11 +38,6 @@ import com.example.dbmciquiz.view.component.SwipeToSkipCard
 import com.example.dbmciquiz.view.component.enterFrom
 import com.example.dbmciquiz.view.screen.ErrorScreen
 import com.example.dbmciquiz.view.screen.SplashScreen
-import com.example.dbmciquiz.view.theme.QuizFlameLit
-import com.example.dbmciquiz.view.theme.QuizOnSurface
-import com.example.dbmciquiz.view.theme.QuizOnSurfaceMuted
-import com.example.dbmciquiz.view.theme.QuizSurfaceHigh
-import com.example.dbmciquiz.view.theme.QuizTrack
 import com.example.dbmciquiz.view.theme.Spacing
 
 /** Delay between consecutive option pills sliding in when a new question appears. */
@@ -101,13 +96,18 @@ fun QuizQuestionScreen(vm: QuizViewModel = viewModel(), navigateTo: (route: Stri
                 Text(
                     text = "Quiz",
                     style = MaterialTheme.typography.titleLarge,
-                    color = QuizOnSurface
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(Modifier.weight(1f))
                 Text(
                     text = "$streak",
                     style = MaterialTheme.typography.titleMedium,
-                    color = if (streak >= QuizViewModel.STREAK_MILESTONE) QuizFlameLit else QuizOnSurface
+                    // secondary is the streak-flame colour once the milestone is hit.
+                    color = if (streak >= QuizViewModel.STREAK_MILESTONE) {
+                        MaterialTheme.colorScheme.secondary
+                    } else {
+                        MaterialTheme.colorScheme.onSurface
+                    }
                 )
                 Spacer(Modifier.width(Spacing.xSmall))
                 StreakIcon(streak = streak)
@@ -115,7 +115,7 @@ fun QuizQuestionScreen(vm: QuizViewModel = viewModel(), navigateTo: (route: Stri
             Spacer(Modifier.height(Spacing.medium))
             Text(
                 text = "Question ${currentIndex + 1} of $questionCount",
-                color = QuizOnSurfaceMuted,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -135,7 +135,7 @@ fun QuizQuestionScreen(vm: QuizViewModel = viewModel(), navigateTo: (route: Stri
                         text = currentQuestion.text,
                         style = MaterialTheme.typography.headlineSmall,
                         textAlign = TextAlign.Center,
-                        color = QuizOnSurface,
+                        color = MaterialTheme.colorScheme.onSurface,
                         // Slide in from the right each time the question changes.
                         modifier = Modifier
                             .fillMaxWidth()
@@ -213,8 +213,8 @@ private fun QuizProgressBar(current: Int, total: Int) {
             .height(Spacing.small)
             .clip(CircleShape),
         progress = { animatedProgress },
-        color = QuizOnSurface,
-        trackColor = QuizTrack
+        color = MaterialTheme.colorScheme.onSurface,
+        trackColor = MaterialTheme.colorScheme.outlineVariant
     )
 }
 
@@ -227,8 +227,8 @@ private fun SkipNextButton(label: String, onClick: () -> Unit) {
         onClick = onClick,
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(
-            containerColor = QuizSurfaceHigh,
-            contentColor = QuizOnSurface
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+            contentColor = MaterialTheme.colorScheme.onSurface
         )
     ) {
         Text(text = label, modifier = Modifier.padding(vertical = Spacing.small))

@@ -13,7 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import com.example.dbmciquiz.view.theme.QuizOnSurfaceMuted
 import com.example.dbmciquiz.view.theme.Spacing
 
 /** Full-screen error state shown when the quiz fails to load, with a Retry action. */
@@ -34,12 +33,13 @@ fun ErrorScreen(message: String?, onRetry: () -> Unit) {
         Text(
             text = "Couldn't load the quiz",
             style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onSurface,
             textAlign = TextAlign.Center
         )
         Spacer(Modifier.height(Spacing.small))
         Text(
             text = message ?: "Please check your connection and try again.",
-            color = QuizOnSurfaceMuted,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center
         )
         Spacer(Modifier.height(Spacing.large))
