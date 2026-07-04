@@ -88,9 +88,7 @@ fun SwipeToSkipCard(
                             // Clamp to <= 0 so only right-to-left drags move the page.
                             scope.launch {
                                 offsetX.snapTo(
-                                    (offsetX.value + dragAmount).coerceAtMost(
-                                        0f
-                                    )
+                                    (offsetX.value + dragAmount).coerceAtMost(0f)
                                 )
                             }
                         },

@@ -21,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,6 +36,7 @@ import com.example.dbmciquiz.view.DataState
 import com.example.dbmciquiz.view.Screen
 import com.example.dbmciquiz.view.component.LottiePlayer
 import com.example.dbmciquiz.view.component.SwipeToSkipCard
+import com.example.dbmciquiz.view.component.enterFrom
 import com.example.dbmciquiz.view.screen.ErrorScreen
 import com.example.dbmciquiz.view.screen.SplashScreen
 import com.example.dbmciquiz.view.theme.QuizFlameLit
@@ -134,7 +136,10 @@ fun QuizQuestionScreen(vm: QuizViewModel = viewModel(), navigateTo: (route: Stri
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Center,
                         color = QuizOnSurface,
-                        modifier = Modifier.fillMaxWidth()
+                        // Slide in from the right each time the question changes.
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .enterFrom(key = currentIndex, dx = 40.dp)
                     )
                     Spacer(Modifier.height(60.dp))
                     currentQuestion.options.forEachIndexed { index, option ->
@@ -144,12 +149,21 @@ fun QuizQuestionScreen(vm: QuizViewModel = viewModel(), navigateTo: (route: Stri
                             index == selectedOptionIndex -> OptionState.WRONG
                             else -> OptionState.DEFAULT
                         }
-                        OptionPill(
-                            modifier = Modifier.padding(vertical = 4.dp),
-                            text = option,
-                            state = state,
-                            enabled = answered.not()
-                        ) { vm.selectOption(index) }
+                        key(index) {
+                            OptionPill(
+                                // Stagger the options up as the question appears.
+                                modifier = Modifier
+                                    .enterFrom(
+                                        key = currentIndex,
+                                        dy = 16.dp,
+                                        delayMillis = index * 55
+                                    )
+                                    .padding(vertical = 4.dp),
+                                text = option,
+                                state = state,
+                                enabled = answered.not()
+                            ) { vm.selectOption(index) }
+                        }
                     }
                 }
             }

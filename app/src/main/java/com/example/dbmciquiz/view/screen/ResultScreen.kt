@@ -1,5 +1,8 @@
 package com.example.dbmciquiz.view.screen
 
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateIntAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,14 +18,26 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.dbmciquiz.view.component.enterFrom
 import com.example.dbmciquiz.view.theme.QuizOnSurface
 import com.example.dbmciquiz.view.theme.QuizOnSurfaceMuted
 import com.example.dbmciquiz.view.theme.QuizSurface
+
+/** Delay between consecutive stat cards sliding in. */
+private const val STAT_STAGGER_MS = 90
+
+/** How long a stat's number takes to count up from zero. */
+private const val COUNT_UP_MS = 800
 
 @Composable
 fun ResultScreen(
@@ -73,28 +88,43 @@ fun ResultScreen(
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 StatCard(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f)
+                        .enterFrom(key = Unit, dy = 24.dp),
                     title = "Correct Answers",
-                    value = "$correct/$total"
+                    value = correct,
+                    suffix = "/$total"
                 )
                 StatCard(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f)
+                        .enterFrom(key = Unit, dy = 24.dp, delayMillis = STAT_STAGGER_MS),
                     title = "Highest Streak",
-                    value = "$longestStreak"
+                    value = longestStreak
                 )
             }
 
             Spacer(Modifier.height(16.dp))
 
             StatCard(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .enterFrom(key = Unit, dy = 24.dp, delayMillis = STAT_STAGGER_MS * 2),
                 title = "Skipped Questions",
-                value = "$skipped"
+                value = skipped
             )
 
             Spacer(Modifier.height(32.dp))
 
-            Button(onClick = onRestart, shape = CircleShape) {
+            Button(
+                onClick = onRestart,
+                shape = CircleShape,
+                modifier = Modifier.enterFrom(
+                    key = Unit,
+                    dy = 24.dp,
+                    delayMillis = STAT_STAGGER_MS * 3
+                )
+            ) {
                 Text(
                     text = "Restart Quiz",
                     fontWeight = FontWeight.SemiBold,
@@ -106,7 +136,15 @@ fun ResultScreen(
 }
 
 @Composable
-private fun StatCard(modifier: Modifier = Modifier, title: String, value: String) {
+private fun StatCard(modifier: Modifier, title: String, value: Int, suffix: String = "") {
+    // Count the number up from zero once the card is composed.
+    var launched by remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) { launched = true }
+    val shown by animateIntAsState(
+        targetValue = if (launched) value else 0,
+        animationSpec = tween(COUNT_UP_MS, easing = FastOutSlowInEasing),
+        label = "countUp"
+    )
     Column(
         modifier = modifier
             .background(QuizSurface, RoundedCornerShape(16.dp))
@@ -119,7 +157,7 @@ private fun StatCard(modifier: Modifier = Modifier, title: String, value: String
         )
         Spacer(Modifier.height(8.dp))
         Text(
-            text = value,
+            text = "$shown$suffix",
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
             color = QuizOnSurface
