@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/mihirbajpai/Downloads/**)",
+      "WebFetch(domain:gist.githubusercontent.com)",
+      "Read(//private/tmp/**)",
+      "Bash(python3 -c ' *)",
+      "Bash(mkdir -p app/src/main/res/raw)",
+      "Bash(cp \"/Users/mihirbajpai/Downloads/Purple Questions.json\" app/src/main/res/raw/splash_questions.json)",
+      "Bash(cp \"/Users/mihirbajpai/Downloads/Streak activation.json\" app/src/main/res/raw/streak_activation.json)",
+      "Bash(cp \"/Users/mihirbajpai/Downloads/Celebration \\(1\\).json\" app/src/main/res/raw/celebration.json)",
+      "Bash(./gradlew :app:assembleDebug --console=plain)",
+      "Bash(tee /private/tmp/claude-501/-Users-mihirbajpai-AndroidStudioProjects-DBMCIQuiz/d2cb5d2a-3cf7-4b47-992f-562466c83ac2/scratchpad/build.log)",
+      "Bash(curl -s \"https://gist.githubusercontent.com/dr-samrat/53846277a8fcb034e482906ccc0d12b2/raw\")",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\('correct indices:', [q['correctOptionIndex'] for q in d]\\); print\\('count:', len\\(d\\)\\)\")",
+      "Bash(./gradlew :app:compileDebugKotlin --console=plain)",
+      "Read(//Users/mihirbajpai/StudioProjects/husky/**)",
+      "Read(//Users/mihirbajpai/StudioProjects/**)",
+      "Bash(./gradlew :app:compileDebugKotlin --rerun-tasks --console=plain)",
+      "Bash(python3 -)",
+      "Bash([ -e \"$DST\" ])",
+      "Bash(exit 1)",
+      "Read(//Users/Shared/**)"
+    ]
+  }
+}
