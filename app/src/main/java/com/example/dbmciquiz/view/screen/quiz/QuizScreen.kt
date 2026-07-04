@@ -34,6 +34,7 @@ import com.example.dbmciquiz.R
 import com.example.dbmciquiz.view.DataState
 import com.example.dbmciquiz.view.Screen
 import com.example.dbmciquiz.view.component.LottiePlayer
+import com.example.dbmciquiz.view.component.SwipeToSkipCard
 import com.example.dbmciquiz.view.screen.ErrorScreen
 import com.example.dbmciquiz.view.screen.SplashScreen
 import com.example.dbmciquiz.view.theme.QuizFlameLit
@@ -108,58 +109,68 @@ fun QuizQuestionScreen(vm: QuizViewModel = viewModel(), navigateTo: (route: Stri
                 Spacer(Modifier.width(4.dp))
                 StreakIcon(streak = streak)
             }
-
             Spacer(Modifier.height(20.dp))
-
             Text(
                 text = "Question ${currentIndex + 1} of $questionCount",
                 color = QuizOnSurfaceMuted,
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.fillMaxWidth()
             )
-
             Spacer(Modifier.height(8.dp))
             QuizProgressBar(current = currentIndex + 1, total = questionCount)
-            Spacer(Modifier.height(28.dp))
-
-            Text(
-                text = currentQuestion.text,
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-                color = QuizOnSurface,
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            Spacer(Modifier.height(24.dp))
-
-            currentQuestion.options.forEachIndexed { index, option ->
-                val state = when {
-                    answered.not() -> OptionState.DEFAULT
-                    index == currentQuestion.correctIndex -> OptionState.CORRECT
-                    index == selectedOptionIndex -> OptionState.WRONG
-                    else -> OptionState.DEFAULT
+            // The question is a page: swipe it right-to-left to skip/advance. It fills the space
+            // between the header and the button so there is room to drag and reveal the indicator.
+            SwipeToSkipCard(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                label = if (selectedOptionIndex == null) "Skip" else "Next",
+                onSwiped = vm::onSkipOrNext
+            ) {
+                Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 28.dp)) {
+                    Text(
+                        text = currentQuestion.text,
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        color = QuizOnSurface,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Spacer(Modifier.height(60.dp))
+                    currentQuestion.options.forEachIndexed { index, option ->
+                        val state = when {
+                            answered.not() -> OptionState.DEFAULT
+                            index == currentQuestion.correctIndex -> OptionState.CORRECT
+                            index == selectedOptionIndex -> OptionState.WRONG
+                            else -> OptionState.DEFAULT
+                        }
+                        OptionPill(
+                            modifier = Modifier.padding(vertical = 4.dp),
+                            text = option,
+                            state = state,
+                            enabled = answered.not()
+                        ) { vm.selectOption(index) }
+                    }
                 }
-                OptionPill(
-                    modifier = Modifier.padding(vertical = 4.dp),
-                    text = option,
-                    state = state,
-                    enabled = answered.not()
-                ) { vm.selectOption(index) }
             }
-
-            Spacer(Modifier.weight(1f))
             val autoAdvancing by vm.autoAdvancing.collectAsStateWithLifecycle()
-            if (autoAdvancing) {
-                AutoAdvanceBar(
-                    durationMs = QuizViewModel.AUTO_ADVANCE_MS,
-                    onCancel = vm::cancelAutoAdvance
-                )
-            } else {
-                SkipNextButton(
-                    label = if (selectedOptionIndex == null) "Skip" else "Next",
-                    onClick = vm::onSkipOrNext
-                )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 68.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                if (autoAdvancing) {
+                    AutoAdvanceBar(
+                        durationMs = QuizViewModel.AUTO_ADVANCE_MS,
+                        onCancel = vm::cancelAutoAdvance
+                    )
+                } else {
+                    SkipNextButton(
+                        label = if (selectedOptionIndex == null) "Skip" else "Next",
+                        onClick = vm::onSkipOrNext
+                    )
+                }
             }
         }
 
