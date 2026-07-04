@@ -1,4 +1,4 @@
-package com.example.dbmciquiz.presentation.theme
+package com.example.dbmciquiz.view.theme
 
 import androidx.compose.ui.graphics.Color
 

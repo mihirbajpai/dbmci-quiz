@@ -1,4 +1,4 @@
-package com.example.dbmciquiz.presentation.screen.quiz
+package com.example.dbmciquiz.view.screen.quiz
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
@@ -16,10 +16,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.dbmciquiz.presentation.theme.QuizCorrect
-import com.example.dbmciquiz.presentation.theme.QuizOnSurface
-import com.example.dbmciquiz.presentation.theme.QuizSurface
-import com.example.dbmciquiz.presentation.theme.QuizWrong
+import com.example.dbmciquiz.view.theme.QuizCorrect
+import com.example.dbmciquiz.view.theme.QuizOnSurface
+import com.example.dbmciquiz.view.theme.QuizSurface
+import com.example.dbmciquiz.view.theme.QuizWrong
 
 /** Visual state of an answer option once (or before) the question is answered. */
 enum class OptionState { DEFAULT, CORRECT, WRONG }

@@ -1,4 +1,4 @@
-package com.example.dbmciquiz.presentation.screen.quiz
+package com.example.dbmciquiz.view.screen.quiz
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable

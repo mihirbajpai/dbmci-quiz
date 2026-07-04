@@ -1,4 +1,4 @@
-package com.example.dbmciquiz.presentation.screen
+package com.example.dbmciquiz.view.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.dbmciquiz.presentation.theme.QuizOnSurfaceMuted
+import com.example.dbmciquiz.view.theme.QuizOnSurfaceMuted
 
 /** Full-screen error state shown when the quiz fails to load, with a Retry action. */
 @Composable

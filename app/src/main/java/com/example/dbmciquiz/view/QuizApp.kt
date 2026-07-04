@@ -1,4 +1,4 @@
-package com.example.dbmciquiz.presentation
+package com.example.dbmciquiz.view
 
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -13,8 +13,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.dbmciquiz.presentation.screen.ResultScreen
-import com.example.dbmciquiz.presentation.screen.quiz.QuizQuestionScreen
+import com.example.dbmciquiz.view.screen.ResultScreen
+import com.example.dbmciquiz.view.screen.quiz.QuizQuestionScreen
 
 /**
  * Root of the quiz experience: Quiz ⇄ Result navigation on the app background.
