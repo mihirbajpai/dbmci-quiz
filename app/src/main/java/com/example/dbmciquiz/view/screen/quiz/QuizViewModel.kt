@@ -98,7 +98,6 @@ class QuizViewModel : ViewModel() {
         updateUi { autoAdvancing = true }
         autoAdvanceJob = viewModelScope.launch {
             delay(AUTO_ADVANCE_MS.milliseconds)
-            updateUi { autoAdvancing = false }
             advance()
         }
     }
@@ -113,10 +112,14 @@ class QuizViewModel : ViewModel() {
     }
 
     private fun advance() {
+        // Cancel any pending auto-advance so a manual skip/swipe/next doesn't double-advance.
+        autoAdvanceJob?.cancel()
+        autoAdvanceJob = null
         // currentIndex past the last question is what the UI reads as "finished".
         updateUi {
             currentIndex++
             selectedOptionIndex = null
+            autoAdvancing = false
         }
     }
 
