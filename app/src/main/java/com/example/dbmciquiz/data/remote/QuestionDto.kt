@@ -13,7 +13,6 @@ data class QuestionDto(
 )
 
 fun QuestionDto.toDomain(): Question = Question(
-    id = id,
     text = question,
     options = options,
     correctIndex = correctOptionIndex,
