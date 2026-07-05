@@ -46,17 +46,17 @@ private const val OPTION_STAGGER_MS = 50
 @Composable
 fun QuizQuestionScreen(vm: QuizViewModel = viewModel(), navigateTo: (route: String) -> Unit) {
     val questionsState by vm.questionsState.collectAsStateWithLifecycle()
-    if (questionsState is DataState.Loading) {
-        SplashScreen()
-        return
-    } else if (questionsState is DataState.Failure) {
-        ErrorScreen(
-            message = (questionsState as DataState.Failure).error.message,
-            onRetry = vm::fetchQuestions
-        )
-        return
+    val questions = when (val state = questionsState) {
+        is DataState.Loading -> {
+            SplashScreen()
+            return
+        }
+        is DataState.Failure -> {
+            ErrorScreen(message = state.error.message, onRetry = vm::fetchQuestions)
+            return
+        }
+        is DataState.Success -> state.value
     }
-    val questions = (questionsState as DataState.Success).value
     val currentIndex by vm.currentIndex.collectAsStateWithLifecycle()
     val selectedOptionIndex by vm.selectedOptionIndex.collectAsStateWithLifecycle()
     val streak by vm.streak.collectAsStateWithLifecycle()
@@ -80,6 +80,7 @@ fun QuizQuestionScreen(vm: QuizViewModel = viewModel(), navigateTo: (route: Stri
     val currentQuestion = questions[currentIndex]
     val questionCount = questions.size
     val answered = selectedOptionIndex != null
+    val actionLabel = if (answered) "Next" else "Skip"
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -124,7 +125,7 @@ fun QuizQuestionScreen(vm: QuizViewModel = viewModel(), navigateTo: (route: Stri
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                label = if (selectedOptionIndex == null) "Skip" else "Next",
+                label = actionLabel,
                 onSwiped = vm::onSkipOrNext
             ) {
                 Column(modifier = Modifier.padding(horizontal = Spacing.medium, vertical = 28.dp)) {
@@ -175,10 +176,7 @@ fun QuizQuestionScreen(vm: QuizViewModel = viewModel(), navigateTo: (route: Stri
                         onCancel = vm::cancelAutoAdvance
                     )
                 } else {
-                    SkipNextButton(
-                        label = if (selectedOptionIndex == null) "Skip" else "Next",
-                        onClick = vm::onSkipOrNext
-                    )
+                    SkipNextButton(label = actionLabel, onClick = vm::onSkipOrNext)
                 }
             }
         }

@@ -84,7 +84,7 @@ fun SwipeToSkipCard(
                         onDragEnd = {
                             scope.launch {
                                 // Past the threshold: fling off-screen, advance, then snap back to
-                                // center so the next question starts centred. Otherwise, spring back.
+                                // centre for the next question. Otherwise, spring back to rest.
                                 if (-offsetX.value > width * SWIPE_COMMIT_FRACTION) {
                                     offsetX.animateTo(
                                         -width * SWIPE_OFF_FRACTION,

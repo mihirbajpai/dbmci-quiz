@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.dbmciquiz.data.model.Question
 import com.example.dbmciquiz.data.repository.QuizRepository
 import com.example.dbmciquiz.view.DataState
+import com.example.dbmciquiz.view.screen.quiz.QuizViewModel.Companion.AUTO_ADVANCE_MS
 import com.example.dbmciquiz.view.update
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -35,7 +36,10 @@ class QuizViewModel : ViewModel() {
     private val _showCelebration = MutableStateFlow(false)
     val showCelebration: StateFlow<Boolean> = _showCelebration.asStateFlow()
 
-    /** [longestStreak], [correctCount] and [skippedCount] read once at finish and handed to Result as nav args.*/
+    /**
+     * [longestStreak], [correctCount] and [skippedCount] are read once at finish and handed to
+     * Result as nav args.
+     */
     var longestStreak = 0
         private set
     var correctCount = 0
@@ -93,7 +97,7 @@ class QuizViewModel : ViewModel() {
         _autoAdvancing.value = false
     }
 
-    /** Hits after answer lock */
+    /** After an answer, count down [AUTO_ADVANCE_MS] then move on — unless Cancel stops it. */
     private fun startAutoAdvance() {
         _autoAdvancing.value = true
         autoAdvanceJob = viewModelScope.launch {
