@@ -51,15 +51,18 @@ fun QuizQuestionScreen(vm: QuizViewModel = viewModel(), navigateTo: (route: Stri
             SplashScreen()
             return
         }
+
         is DataState.Failure -> {
             ErrorScreen(message = state.error.message, onRetry = vm::fetchQuestions)
             return
         }
+
         is DataState.Success -> state.value
     }
-    val currentIndex by vm.currentIndex.collectAsStateWithLifecycle()
-    val selectedOptionIndex by vm.selectedOptionIndex.collectAsStateWithLifecycle()
-    val streak by vm.streak.collectAsStateWithLifecycle()
+    val uiState by vm.uiState.collectAsStateWithLifecycle()
+    val currentIndex = uiState.currentIndex
+    val selectedOptionIndex = uiState.selectedOptionIndex
+    val streak = uiState.streak
 
     // Past the last question = finished. Navigates to result screen
     val finished = currentIndex >= questions.size
@@ -163,14 +166,13 @@ fun QuizQuestionScreen(vm: QuizViewModel = viewModel(), navigateTo: (route: Stri
                     }
                 }
             }
-            val autoAdvancing by vm.autoAdvancing.collectAsStateWithLifecycle()
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .heightIn(min = 68.dp),
                 contentAlignment = Alignment.Center
             ) {
-                if (autoAdvancing) {
+                if (uiState.autoAdvancing) {
                     AutoAdvanceBar(
                         durationMs = QuizViewModel.AUTO_ADVANCE_MS,
                         onCancel = vm::cancelAutoAdvance
@@ -181,7 +183,7 @@ fun QuizQuestionScreen(vm: QuizViewModel = viewModel(), navigateTo: (route: Stri
             }
         }
 
-        val showCelebration by vm.showCelebration.collectAsStateWithLifecycle()
+        val showCelebration = uiState.showCelebration
         val context = LocalContext.current
         LaunchedEffect(showCelebration) {
             if (showCelebration) {

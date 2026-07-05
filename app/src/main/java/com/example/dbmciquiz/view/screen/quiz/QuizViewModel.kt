@@ -15,26 +15,22 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.milliseconds
 
+/** The quiz-in-progress state the UI observes. Mutated only via [QuizViewModel.updateUi]. */
+data class QuizUiState(
+    var currentIndex: Int = 0,
+    var selectedOptionIndex: Int? = null,
+    var streak: Int = 0,
+    var autoAdvancing: Boolean = false,
+    var showCelebration: Boolean = false,
+)
+
 class QuizViewModel : ViewModel() {
+    // Load lifecycle, kept separate from quiz progress: the splash/quiz/error switch reads this.
     private val _questionsState = MutableStateFlow<DataState<List<Question>>>(DataState.Loading())
     val questionsState: StateFlow<DataState<List<Question>>> = _questionsState.asStateFlow()
 
-    private val _currentIndex = MutableStateFlow(0)
-    val currentIndex: StateFlow<Int> = _currentIndex.asStateFlow()
-
-    private val _selectedOptionIndex = MutableStateFlow<Int?>(null)
-    val selectedOptionIndex: StateFlow<Int?> = _selectedOptionIndex.asStateFlow()
-
-    private val _streak = MutableStateFlow(0)
-    val streak: StateFlow<Int> = _streak.asStateFlow()
-
-    /** True while the cancellable "moving to next question" countdown is running. */
-    private val _autoAdvancing = MutableStateFlow(false)
-    val autoAdvancing: StateFlow<Boolean> = _autoAdvancing.asStateFlow()
-
-    /** True while the celebration overlay is showing; VM-timed, like [autoAdvancing]. */
-    private val _showCelebration = MutableStateFlow(false)
-    val showCelebration: StateFlow<Boolean> = _showCelebration.asStateFlow()
+    private val _uiState = MutableStateFlow(QuizUiState())
+    val uiState: StateFlow<QuizUiState> = _uiState.asStateFlow()
 
     /**
      * [longestStreak], [correctCount] and [skippedCount] are read once at finish and handed to
@@ -47,7 +43,6 @@ class QuizViewModel : ViewModel() {
     var skippedCount = 0
         private set
 
-    /** [autoAdvanceJob] is used to handle [autoAdvancing]*/
     private var autoAdvanceJob: Job? = null
 
     init {
@@ -61,65 +56,73 @@ class QuizViewModel : ViewModel() {
     }
 
     fun selectOption(index: Int) {
+        // Ignore if the question isn't loaded yet, or it's already answered.
         val question =
-            (_questionsState.value as? DataState.Success)?.value?.getOrNull(_currentIndex.value)
-        // Ignore if no current question, or already answered.
-        if (question == null || _selectedOptionIndex.value != null) return
-        _selectedOptionIndex.value = index
+            (_questionsState.value as? DataState.Success)?.value?.getOrNull(_uiState.value.currentIndex)
+        if (_uiState.value.selectedOptionIndex != null || question == null) return
+        updateUi { selectedOptionIndex = index }
 
         if (index == question.correctIndex) {
-            _streak.value++
             correctCount++
-            // New personal best at/above the milestone.
-            if (_streak.value > longestStreak) {
-                longestStreak = _streak.value
+            val newStreak = _uiState.value.streak + 1
+            updateUi { streak = newStreak }
+            // A new personal best at/above the milestone triggers a celebration.
+            if (newStreak > longestStreak) {
+                longestStreak = newStreak
                 if (longestStreak >= STREAK_MILESTONE) celebrate()
             }
         } else {
-            _streak.value = 0
+            updateUi { streak = 0 }
         }
         startAutoAdvance()
     }
 
     /** The bottom button: "Skip" for an unanswered question, otherwise "Next". */
     fun onSkipOrNext() {
-        if (_selectedOptionIndex.value == null) {
-            skippedCount += 1
-            _streak.value = 0
+        if (_uiState.value.selectedOptionIndex == null) {
+            skippedCount++
+            updateUi { streak = 0 }
         }
         advance()
     }
 
-    /** Cancel text in [AutoAdvanceBar]: cancel the auto advance progress. */
+    /** Cancel text in [AutoAdvanceBar]: stops the auto-advance countdown. */
     fun cancelAutoAdvance() {
         autoAdvanceJob?.cancel()
         autoAdvanceJob = null
-        _autoAdvancing.value = false
+        updateUi { autoAdvancing = false }
     }
 
     /** After an answer, count down [AUTO_ADVANCE_MS] then move on — unless Cancel stops it. */
     private fun startAutoAdvance() {
-        _autoAdvancing.value = true
+        updateUi { autoAdvancing = true }
         autoAdvanceJob = viewModelScope.launch {
             delay(AUTO_ADVANCE_MS.milliseconds)
-            _autoAdvancing.value = false
+            updateUi { autoAdvancing = false }
             advance()
         }
     }
 
-    /** Shows the celebration overlay animation on personal record */
+    /** Shows the celebration overlay on a new personal-record streak. */
     private fun celebrate() {
         viewModelScope.launch {
-            _showCelebration.value = true
+            updateUi { showCelebration = true }
             delay(AUTO_ADVANCE_MS.milliseconds)
-            _showCelebration.value = false
+            updateUi { showCelebration = false }
         }
     }
 
     private fun advance() {
         // currentIndex past the last question is what the UI reads as "finished".
-        _currentIndex.value++
-        _selectedOptionIndex.value = null
+        updateUi {
+            currentIndex++
+            selectedOptionIndex = null
+        }
+    }
+
+    /** Publishes a fresh copy of the UI state with [block]'s assignments applied. */
+    private inline fun updateUi(block: QuizUiState.() -> Unit) {
+        _uiState.value = _uiState.value.copy().apply(block)
     }
 
     companion object {
