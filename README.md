@@ -27,8 +27,8 @@ The theme follows the system setting:
 
 ## What it does
 
-- Loads set of questions from a GitHub Gist over the network, and keeps them in memory so it doesn't
-  refetch on the way back.
+- Loads a set of questions from a GitHub Gist over the network, and keeps them in memory so it
+  doesn't refetch on the way back.
 - Shows a loading splash while the questions arrive, and an error screen with a Retry button if the
   request fails.
 - Locks a question as soon as you answer, marking the correct option green and a wrong choice red.
@@ -72,6 +72,8 @@ A few decisions worth calling out:
   Retry still works.
 - Loading, success, and error are modelled with a small `DataState` type that drives the switch
   between the splash, quiz, and error screens.
+- The quiz's in-progress state — current question, selected option, streak, and the auto-advance
+  and celebration flags — is a single `QuizUiState` object, kept separate from that load state.
 - The `QuizViewModel` is tied to the quiz screen's navigation entry, so restarting the quiz gives you
   a fresh one with no manual reset. The final scores are passed to the results screen as navigation
   arguments.
