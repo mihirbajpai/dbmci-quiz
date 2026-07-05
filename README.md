@@ -27,7 +27,7 @@ The theme follows the system setting:
 
 ## What it does
 
-- Loads ten questions from a GitHub Gist over the network, and keeps them in memory so it doesn't
+- Loads set of questions from a GitHub Gist over the network, and keeps them in memory so it doesn't
   refetch on the way back.
 - Shows a loading splash while the questions arrive, and an error screen with a Retry button if the
   request fails.
